@@ -20,7 +20,10 @@ pipeline {
 
         stage('Run Violation Detection') {
             steps {
-                sh 'echo -e "1\ntraffic6.jpg" | python trafficproj.py'
+                sh '''
+                    . venv/bin/activate
+                    echo -e "1\ntraffic6.jpg" | python trafficproj.py
+                '''
             }
         }
     }
