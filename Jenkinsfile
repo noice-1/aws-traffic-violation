@@ -20,7 +20,7 @@ pipeline {
 
         stage('Run Violation Detection') {
             steps {
-                sh 'python trafficproj.py <<< "1\ntraffic6.jpg\n"'
+                sh 'echo -e "1\ntraffic6.jpg" | python trafficproj.py'
             }
         }
     }
