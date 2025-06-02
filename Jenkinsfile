@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                sh 'pip install boto3 pillow opencv-python'
+                sh 'python -m pip install boto3 pillow opencv-python'
             }
         }
 
