@@ -1,9 +1,18 @@
 pipeline {
     agent any
+    environment {
+        PYTHONUNBUFFERED = '1'
+    }
     stages {
-        stage('Clone Repo') {
+        stage('Install Dependencies') {
             steps {
-                git branch: 'main', url: 'https://github.com/noice-1/AWS-traffic-violation.git'
+                sh 'pip install boto3 pillow opencv-python'
+            }
+        }
+
+        stage('Run Violation Detection') {
+            steps {
+                sh 'python trafficproj.py <<< "1\ntraffic6.jpg\n"'
             }
         }
     }
