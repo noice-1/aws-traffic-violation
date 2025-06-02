@@ -11,6 +11,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
+                    apt-get update && apt-get install -y libgl1
                     python3 -m venv venv
                     . venv/bin/activate
                     pip install boto3 pillow opencv-python
