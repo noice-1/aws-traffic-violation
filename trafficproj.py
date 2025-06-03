@@ -196,22 +196,32 @@ def process_image(photo_path):
 
 #input_type = int(input("Enter 1 for image, 2 for webcam or 3 for video: "))
 import sys
-if len(sys.argv) < 2:
-    print("Usage: python trafficproj.py <input_type> [path_to_file]")
-    sys.exit(1)
-
-input_type = int(sys.argv[1])
-
-if input_type == 1:
-    if len(sys.argv) < 3:
-        print("Image path required.")
+def get_user_input():
+    try:
+        # If args are passed, use them
+        if len(sys.argv) >= 2:
+            input_type = int(sys.argv[1])
+            input_path = sys.argv[2] if len(sys.argv) > 2 else None
+        else:
+            # Fallback to interactive input
+            input_type = int(input("Enter 1 for image, 2 for webcam or 3 for video: "))
+            input_path = input("Enter path to input file (or leave blank for webcam): ") if input_type in [1, 3] else None
+        return input_type, input_path
+    except Exception as e:
+        print(f"❌ Invalid input: {e}")
         sys.exit(1)
-    path = sys.argv[2]
-    process_image(path)
-elif input_type == 2:
-    process_webcam()
-elif input_type == 3:
-    path = input("Enter video path: ")
-    process_video(path)
-else:
-    print("Invalid input, please enter 1, 2 or 3")
+
+if __name__ == "__main__":
+    input_type, path = get_user_input()
+
+    if input_type == 1:
+        print(f"📷 Processing image: {path}")
+        process_image(path)
+    elif input_type == 2:
+        print("🎥 Accessing webcam...")
+        process_webcam()
+    elif input_type == 3:
+        print(f"🎞️ Processing video: {path}")
+        process_video(path)
+    else:
+        print("❌ Invalid input type. Choose 1 (image), 2 (webcam), or 3 (video).")
