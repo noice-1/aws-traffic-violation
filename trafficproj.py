@@ -195,8 +195,12 @@ def process_image(photo_path):
     analyze_frame(src)
 
 input_type = int(input("Enter 1 for image, 2 for webcam or 3 for video: "))
+import sys
 if input_type == 1:
-    path = input("Enter image path: ")
+    if len(sys.argv) < 3:
+        print("Image path required.")
+        sys.exit(1)
+    path = sys.argv[2]
     process_image(path)
 elif input_type == 2:
     process_webcam()
