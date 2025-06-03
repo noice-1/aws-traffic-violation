@@ -1,12 +1,20 @@
-import csv, boto3, io, cv2, re
+import csv, boto3, io, cv2, re, os
 from PIL import Image, ImageDraw
 
-with open('trafficproject_accessKeys.csv', 'r') as file:
-    next(file)
-    reader = csv.reader(file)
-    for line in reader:
-        access_key_id = line[0]
-        secret_access_key = line[1]
+access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+if not access_key_id or not secret_access_key:
+    try:
+        with open('trafficproject_accessKeys.csv', 'r') as file:
+            next(file)
+            reader = csv.reader(file)
+            for line in reader:
+                access_key_id = line[0]
+                secret_access_key = line[1]
+    except FileNotFoundError:
+        print("❌ Credentials not found in environment or CSV.")
+        exit(1)
 
 client = boto3.client(
     'rekognition',
