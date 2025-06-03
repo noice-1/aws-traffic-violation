@@ -194,8 +194,14 @@ def process_image(photo_path):
         src = img.read()
     analyze_frame(src)
 
-input_type = int(input("Enter 1 for image, 2 for webcam or 3 for video: "))
+#input_type = int(input("Enter 1 for image, 2 for webcam or 3 for video: "))
 import sys
+if len(sys.argv) < 2:
+    print("Usage: python trafficproj.py <input_type> [path_to_file]")
+    sys.exit(1)
+
+input_type = int(sys.argv[1])
+
 if input_type == 1:
     if len(sys.argv) < 3:
         print("Image path required.")
