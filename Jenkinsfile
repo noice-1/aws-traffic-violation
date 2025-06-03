@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh '''
                     . venv/bin/activate
-                    echo -e "1\ntraffic6.jpg" | python trafficproj.py
+                    python trafficproj.py 1 traffic6.jpg
                 '''
             }
         }
