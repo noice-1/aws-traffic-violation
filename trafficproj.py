@@ -57,11 +57,26 @@ def lookup_phone_number(plate_number):
 
 def detect_license_plate(image_bytes):
     response = client.detect_text(Image={'Bytes': image_bytes})
-    for text_detail in response['TextDetections']:
-        text = text_detail['DetectedText']
-        if re.match(r'^[A-Z]{2}\d{1,2}[A-Z]{1,2}\d{4}$', text):
-            print(f"🔍 Possible plate number: {text}")
-            return text
+    detections = response['TextDetections']
+
+    # Extract only printed (not parent) texts
+    texts = [
+        (text['DetectedText'], text['Geometry']['BoundingBox']['Top'])
+        for text in detections
+        if text['Type'] == 'WORD'
+    ]
+
+    # Sort by vertical position (top to bottom)
+    texts = sorted(texts, key=lambda x: x[1])
+
+    # Try combining all pairs and see if any match a license plate pattern
+    for i in range(len(texts)):
+        for j in range(i + 1, len(texts)):
+            combined = texts[i][0] + texts[j][0]
+            if re.match(r'^[A-Z]{2}\d{1,2}[A-Z]{1,2}\d{4}$', combined):
+                print("🔍 License Plate Detected:",combined)
+                return combined
+
     print("⚠️ No valid license plate detected.")
     return None
 
